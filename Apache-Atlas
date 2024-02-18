@@ -7,13 +7,22 @@ sudo usermod -a -G docker ec2-user
 
 LOGOUT and login
 
+# Attach EBS volumn
+df -h
+lsblk
+sudo mkfs -t ext4 /dev/xvdf
+sudo mkdir /data
+sudo mount /dev/xvdf /data
+sudo chown ec2-user:ec2-user /data
+echo '/dev/xvdf /data ext4 defaults,nofail 0 0' | sudo tee -a /etc/fstab
+ df -h
+
+
 # https://hub.docker.com/r/sburn/apache-atlas
-sudo mkdir -p /atlas_data_volume
-sudo chmod 777 /atlas_data_volume
 docker volume create atlas_data_volume
 docker run -d -p 21000:21000 \
   --name atlas \
-  -v atlas_data_volume:/atlas_data_volume \
+  -v atlas_data_volume:/data \
   sburn/apache-atlas
 
 docker stop atlas
