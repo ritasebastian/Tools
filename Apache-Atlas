@@ -36,3 +36,6 @@ docker run -d -p 21000:21000 \
 docker ps
 
 http://localhost:21000/ ( ip address of ec2 public ip as localhost )
+
+Data Import
+https://atlas.apache.org/0.8.4/Import-API.html
