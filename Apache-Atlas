@@ -1,0 +1,29 @@
+# Install Docker Engine on EC2 Instance
+sudo dnf install docker -y
+sudo service docker start
+sudo service docker enable
+sudo usermod -a -G docker ec2-user
+# ADD SG allow 21000 port
+
+LOGOUT and login
+
+# https://hub.docker.com/r/sburn/apache-atlas
+sudo mkdir -p /atlas_data_volume
+sudo chmod 777 /atlas_data_volume
+docker volume create atlas_data_volume
+docker run -d -p 21000:21000 \
+  --name atlas \
+  -v atlas_data_volume:/path/in/container \
+  sburn/apache-atlas
+
+docker stop atlas
+docker rm atlas
+docker pull sburn/apache-atlas:new_version
+docker run -d -p 21000:21000 \
+  --name atlas \
+  -v atlas_data_volume:/path/in/container \
+  sburn/apache-atlas:new_version
+
+docker ps
+
+http://localhost:21000/ ( ip address of ec2 public ip as localhost )
