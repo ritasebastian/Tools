@@ -13,7 +13,7 @@ sudo chmod 777 /atlas_data_volume
 docker volume create atlas_data_volume
 docker run -d -p 21000:21000 \
   --name atlas \
-  -v atlas_data_volume:/path/in/container \
+  -v atlas_data_volume:/atlas_data_volume \
   sburn/apache-atlas
 
 docker stop atlas
@@ -21,7 +21,7 @@ docker rm atlas
 docker pull sburn/apache-atlas:new_version
 docker run -d -p 21000:21000 \
   --name atlas \
-  -v atlas_data_volume:/path/in/container \
+  -v atlas_data_volume:/atlas_data_volume \
   sburn/apache-atlas:new_version
 
 docker ps
