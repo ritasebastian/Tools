@@ -20,20 +20,22 @@ echo '/dev/xvdf /data ext4 defaults,nofail 0 0' | sudo tee -a /etc/fstab
 
 # https://hub.docker.com/r/sburn/apache-atlas
 docker volume create atlas_data_volume
-docker run -d -p 21000:21000 \
-  --name atlas \
-  -v atlas_data_volume:/data \
-  sburn/apache-atlas
+docker run -d -p 21000:21000 -v atlas_data_volume:/data -it -u atlas sburn/apache-atlas
+docker run -p 21000:21000 -v <your-volume>:/opt/apache-atlas-<atlas-version> -it -u atlas sansarip/apache-atlas
 
 docker stop atlas
 docker rm atlas
-docker pull sburn/apache-atlas:new_version
+docker pull sburn/apache-atlas
 docker run -d -p 21000:21000 \
   --name atlas \
   -v atlas_data_volume:/atlas_data_volume \
-  sburn/apache-atlas:new_version
+  sburn/apache-atlas
 
-docker ps
+docker ps -a
+docker exec -it atlas /bin/bash
+apt-get update
+apt-get install vim
+
 
 http://localhost:21000/ ( ip address of ec2 public ip as localhost )
 
